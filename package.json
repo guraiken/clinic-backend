@@ -1,31 +1,31 @@
 {
-  "name": "clinic-backend",
+  "name": "clinic_backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend with Node, Typescript and Prisma. For students with medical clinic context;",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "ts-node src/index.ts",
-    "atividade": "ts-node src/atividade1.ts"
+    "start": "tsx --watch src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/guraiken/clinic-backend.git"
+    "url": "git+https://github.com/Alekmz/clinic_backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "module",
   "bugs": {
-    "url": "https://github.com/guraiken/clinic-backend/issues"
+    "url": "https://github.com/Alekmz/clinic_backend/issues"
   },
-  "homepage": "https://github.com/guraiken/clinic-backend#readme",
+  "homepage": "https://github.com/Alekmz/clinic_backend#readme",
   "dependencies": {
     "@prisma/adapter-pg": "^7.4.2",
     "@prisma/client": "^7.4.2",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
-    "pg": "^8.20.0"
+    "pg": "^8.20.0",
+    "tsx": "^4.21.0"
   },
   "devDependencies": {
     "@types/express": "^5.0.6",
