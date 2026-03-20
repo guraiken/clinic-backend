@@ -14,9 +14,11 @@ datasource db {
 }
 
 model Usuario {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  nome  String?
+  id     Int     @id @default(autoincrement())
+  email  String  @unique
+  nome   String?
+  senha  String
+  tokens Token[]
 
   @@map("usuario")
 }
@@ -30,4 +32,20 @@ model Exame {
   data_exame DateTime
 
   @@map("exame")
+}
+
+enum Type {
+  NORMAL
+  REFRESH
+}
+
+model Token {
+  id         Int      @id @default(autoincrement())
+  token      String
+  type       Type     @default(NORMAL)
+  revoked    Boolean  @default(false)
+  expiresAt  DateTime
+  usuario_id Usuario  @relation(fields: [id], references: [id])
+
+  @@map("token")
 }

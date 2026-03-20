@@ -51,3 +51,8 @@ export type Usuario = Prisma.UsuarioModel
  * 
  */
 export type Exame = Prisma.ExameModel
+/**
+ * Model Token
+ * 
+ */
+export type Token = Prisma.TokenModel

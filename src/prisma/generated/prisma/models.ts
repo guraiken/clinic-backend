@@ -10,4 +10,5 @@
  */
 export type * from './models/Usuario'
 export type * from './models/Exame'
+export type * from './models/Token'
 export type * from './commonInputTypes'
