@@ -3,6 +3,8 @@ import { prisma } from './prisma/prisma';
 import type { Exame, Usuario, TypeToken } from './prisma/generated/prisma/client';
 import { createHash } from './utils/createHash';
 import bcrypt from "bcrypt"
+import jwt from "jsonwebtoken"
+import { env } from "./env"
 
 const app = express();
 app.use(express.json())
@@ -53,14 +55,33 @@ app.post("/login", async (req, res) => {
 app.post("/cadastro", async (req, res) => {
   const dadosUsuario = req.body as Usuario
   const hash = await createHash(dadosUsuario.senha);
-  const usuarioCriado = await prisma.usuario.create({
+  const token = jwt.sign(
+    {
+      id: dadosUsuario.id,
+      email: dadosUsuario.email,
+      nome: dadosUsuario.nome,
+      senha: hash
+    },
+    env.chaveAcesso,
+    {
+        expiresIn: "1h",
+    }
+);
+
+  const result = await prisma.usuario.create({
     data: {
       email: dadosUsuario.email,
       nome: dadosUsuario.nome || null,
-      senha: hash
+      senha: hash,
     }
   })
-  return res.status(201).json(usuarioCriado)
+
+  const prismaToken = await prisma.token.create({
+    data: {
+      token: token
+    }
+  })
+  return res.status(201).json(result)
 })
 
 app.put("/usuarios/:id", async (req, res) => {
