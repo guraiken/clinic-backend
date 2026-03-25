@@ -1,7 +1,8 @@
 import express from 'express';
-import bcrypt from "bcrypt"
 import { prisma } from './prisma/prisma';
-import type { Exame, Usuario } from './prisma/generated/prisma/client';
+import type { Exame, Usuario, TypeToken } from './prisma/generated/prisma/client';
+import { createHash } from './utils/createHash';
+import bcrypt from "bcrypt"
 
 const app = express();
 app.use(express.json())
@@ -20,24 +21,43 @@ app.get('/usuarios', async (_, res) => {
 
 app.get('/usuarios/:id', async (req, res) => {
   const idUsuario = Number(req.params.id)
-  const dadoEnviado = req.body as Usuario
   const usuario = await prisma.usuario.findUnique({
     where: {
       id: idUsuario
     }
   })
+
   return res.status(200).json(usuario);
 })
 
-app.post("/usuarios", async (req, res) => {
-  console.log(req.body)
+app.post("/login", async (req, res) => {
+  const dadosUsuario = req.body as Partial<Usuario>
+  const usuarioEmail = dadosUsuario.email
+  const usuarioProcurado = await prisma.usuario.findUnique({
+    where: {
+      email: dadosUsuario.email || "" 
+    }
+  })
+
+  if(usuarioEmail == usuarioProcurado?.email){
+    const validate = await bcrypt.compare(dadosUsuario.senha || "", usuarioProcurado?.senha || "")
+    if(validate) {
+      return res.status(201).json("O usuário foi validado com sucesso!")
+
+    } else {
+      return res.status(422).json("Erro nas credênciais do JSON")
+    }
+  }
+})
+
+app.post("/cadastro", async (req, res) => {
   const dadosUsuario = req.body as Usuario
-  const senhaHash = await bcrypt.hash(dadosUsuario.senha, 10)
+  const hash = await createHash(dadosUsuario.senha);
   const usuarioCriado = await prisma.usuario.create({
     data: {
       email: dadosUsuario.email,
       nome: dadosUsuario.nome || null,
-      senha: `${senhaHash}`
+      senha: hash
     }
   })
   return res.status(201).json(usuarioCriado)
@@ -136,5 +156,5 @@ app.delete('/exames/:id', async (req, res) => {
 })
 
 app.listen(port, () => {
-  console.log("Servidor ta de pé :p")
+  console.log("Servidor ta de pé :p" + port)
 })

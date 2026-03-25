@@ -14,6 +14,11 @@
     },
     {
       "file": "src/index.ts",
+      "description": "Criar usuarios",
+      "line": 20
+    },
+    {
+      "file": "src/index.ts",
       "description": "Colocando a api para rodar e escutar a porta",
       "line": 13
     },

@@ -30,3 +30,4 @@ CREATE TABLE "exame" (
 
 -- CreateIndex
 CREATE UNIQUE INDEX "usuario_email_key" ON "usuario"("email");
+
