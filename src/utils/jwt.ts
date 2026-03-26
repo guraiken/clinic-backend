@@ -11,7 +11,7 @@ export function signTokenAcesso(payload: Partial<Usuario>) {
 
 export function signTokenRefresh(payload: Partial<Usuario>) {
     return jwt.sign(payload, env.chaveRefresh, {
-        expiresIn: '24h'
+        expiresIn: '30d'
     })
 }
 

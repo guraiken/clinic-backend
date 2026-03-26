@@ -5,10 +5,91 @@ import { createHash } from './utils/createHash';
 import bcrypt from "bcrypt"
 import jwt from "jsonwebtoken"
 import { env } from "./env"
+import { signTokenAcesso, signTokenRefresh } from './utils/jwt';
+import { log } from 'console';
+import { auth } from './middleware/auth';
 
 const app = express();
 app.use(express.json())
 const port = 3000;
+
+app.post("/login", async (req, res) => {
+  const dadosUsuario = req.body as Partial<Usuario>
+  const usuarioProcurado = await prisma.usuario.findUnique({
+    where: {
+      email: dadosUsuario.email || "" 
+    }
+  })
+
+  if(usuarioProcurado){
+    const validate = await bcrypt.compare(dadosUsuario.senha || "", usuarioProcurado?.senha || "")
+    if(validate) {
+      const tokenAcesso = signTokenAcesso({
+        email: usuarioProcurado.email,
+        nome: usuarioProcurado.nome
+      })
+      const tokenRefresh = signTokenRefresh({
+        email: usuarioProcurado.email,
+        nome: usuarioProcurado.nome
+      })
+
+      
+
+      const accessExpires = new Date()
+      const accessExpiresUpdate = accessExpires.setHours(accessExpires.getHours() + 1)
+
+      //token acesso
+      await prisma.token.create({
+        data: {
+          token: tokenAcesso,
+          expiresAt: new Date(accessExpiresUpdate),
+          type: "ACCESS",
+          usuarioId: usuarioProcurado.id
+        }
+      })
+
+      const refreshExpires = new Date()
+      const refreshExpiresUpdate = refreshExpires.setMonth(accessExpires.getMonth() + 1)
+
+      //token refresh
+      await prisma.token.create({
+        data: {
+          token: tokenRefresh,
+          expiresAt: new Date(refreshExpiresUpdate),
+          type: "REFRESH",
+          usuarioId: usuarioProcurado.id
+        }
+      })
+
+      return res.status(200).json({
+        message: "Usuário validado com sucesso",
+        accessToken: tokenAcesso,
+        refreshToken: tokenRefresh
+      })
+
+    } else {
+      return res.status(422).json("Erro nas credenciais do JSON")
+    }
+  }
+})
+
+app.post("/cadastro", async (req, res) => {
+  const dadosUsuario = req.body as Usuario
+  const hash = await createHash(dadosUsuario.senha);
+  const result = await prisma.usuario.create({
+    data: {
+      email: dadosUsuario.email,
+      nome: dadosUsuario.nome || null,
+      senha: hash,
+    }
+  })
+  return res.status(201).json({
+    data: result,
+    message: "Usuário cadastrado com sucesso"
+  })
+})
+
+app.use(auth)
 
 app.get('/', (req, res) => {
   console.log(req)
@@ -30,58 +111,6 @@ app.get('/usuarios/:id', async (req, res) => {
   })
 
   return res.status(200).json(usuario);
-})
-
-app.post("/login", async (req, res) => {
-  const dadosUsuario = req.body as Partial<Usuario>
-  const usuarioEmail = dadosUsuario.email
-  const usuarioProcurado = await prisma.usuario.findUnique({
-    where: {
-      email: dadosUsuario.email || "" 
-    }
-  })
-
-  if(usuarioEmail == usuarioProcurado?.email){
-    const validate = await bcrypt.compare(dadosUsuario.senha || "", usuarioProcurado?.senha || "")
-    if(validate) {
-      return res.status(201).json("O usuário foi validado com sucesso!")
-
-    } else {
-      return res.status(422).json("Erro nas credênciais do JSON")
-    }
-  }
-})
-
-app.post("/cadastro", async (req, res) => {
-  const dadosUsuario = req.body as Usuario
-  const hash = await createHash(dadosUsuario.senha);
-  const token = jwt.sign(
-    {
-      id: dadosUsuario.id,
-      email: dadosUsuario.email,
-      nome: dadosUsuario.nome,
-      senha: hash
-    },
-    env.chaveAcesso,
-    {
-        expiresIn: "1h",
-    }
-);
-
-  const result = await prisma.usuario.create({
-    data: {
-      email: dadosUsuario.email,
-      nome: dadosUsuario.nome || null,
-      senha: hash,
-    }
-  })
-
-  const prismaToken = await prisma.token.create({
-    data: {
-      token: token
-    }
-  })
-  return res.status(201).json(result)
 })
 
 app.put("/usuarios/:id", async (req, res) => {
