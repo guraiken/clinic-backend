@@ -17,8 +17,8 @@ import type * as Prisma from "./prismaNamespace"
 
 const config: runtime.GetPrismaClientConfig = {
   "previewFeatures": [],
-  "clientVersion": "7.4.2",
-  "engineVersion": "94a226be1cf2967af2541cca5529f0f7ba866919",
+  "clientVersion": "7.6.0",
+  "engineVersion": "75cbdc1eb7150937890ad5465d861175c6624711",
   "activeProvider": "postgresql",
   "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../prisma/generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel Usuario {\n  id     Int     @id @default(autoincrement())\n  email  String  @unique\n  nome   String?\n  senha  String\n  tokens Token[]\n\n  @@map(\"usuario\")\n}\n\nmodel Exame {\n  id         Int      @id @default(autoincrement())\n  tipo_exame String\n  valor      Decimal\n  descricao  String\n  resultado  String\n  data_exame DateTime\n\n  @@map(\"exame\")\n}\n\nenum TypeToken {\n  ACCESS\n  REFRESH\n}\n\nmodel Token {\n  id        Int       @id @default(autoincrement())\n  token     String    @db.VarChar(255)\n  type      TypeToken @default(ACCESS)\n  revoked   Boolean   @default(false)\n  expiresAt DateTime\n  usuarioId Int\n\n  usuario Usuario @relation(fields: [usuarioId], references: [id])\n\n  @@map(\"token\")\n}\n",
   "runtimeDataModel": {

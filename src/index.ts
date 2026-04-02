@@ -8,9 +8,11 @@ import { env } from "./env"
 import { signTokenAcesso, signTokenRefresh } from './utils/jwt';
 import { log } from 'console';
 import { auth } from './middleware/auth';
+import cors from "cors"
 
 const app = express();
 app.use(express.json())
+app.use(cors())
 const port = 3000;
 
 app.post("/login", async (req, res) => {
