@@ -2,7 +2,7 @@ import { auth } from './middleware/auth';
 import express from 'express';
 import cors from "cors"
 import { authRouter } from './routes/auth';
-import { usuariosRouter } from './routes/usuarios';
+import { userRouter } from './routes/usuarios';
 import { examesRouter } from './routes/exames';
 
 const app = express();
@@ -14,7 +14,7 @@ const port = 3000;
 app.use(authRouter)
 app.use(auth)
 
-app.use(usuariosRouter)
+app.use(userRouter)
 app.use(examesRouter)
 
 app.listen(port, () => {

@@ -1,8 +1,8 @@
 import type { Usuario } from "../prisma/generated/prisma/client";
-import { usuarioRepository, type UsuarioRepository } from "../repositories/UsuariosRepository";
+import { userRepository, type UserRepository } from "../repositories/UserRepository";
 
-export class UsuarioService{
-    constructor(private readonly repository: UsuarioRepository){
+export class UserService{
+    constructor(private readonly repository: UserRepository){
     }
 
     async buscarVarios(){
@@ -30,4 +30,4 @@ export class UsuarioService{
     }
 }
 
-export const usuarioService = new UsuarioService(usuarioRepository)
+export const userService = new UserService(userRepository)

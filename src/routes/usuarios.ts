@@ -1,23 +1,23 @@
 import { Router } from "express";
 import { prisma } from "../prisma/prisma";
 import type { Usuario } from "../prisma/generated/prisma/client";
-import { usuarioController } from "../controllers/usuarioController";
+import { userController } from "../controllers/UserController";
 
-export const usuariosRouter = Router()
+export const userRouter = Router()
 
 // Endpoints usuario
-usuariosRouter.get('/usuarios', async (req, res) => {
-  return usuarioController.buscarVarios(req, res)
+userRouter.get('/usuarios', async (req, res) => {
+  return userController.buscarVarios(req, res)
 })
 
-usuariosRouter.get('/usuarios/:id', async (req, res) => {
-  return usuarioController.buscarId(req, res)
+userRouter.get('/usuarios/:id', async (req, res) => {
+  return userController.buscarId(req, res)
 })
 
-usuariosRouter.put("/usuarios/:id", async (req, res) => {
-  return usuarioController.atualizar(req, res)
+userRouter.put("/usuarios/:id", async (req, res) => {
+  return userController.atualizar(req, res)
 })
 
-usuariosRouter.delete('/usuarios/:id', async (req, res) => {
-  return usuarioController.deletar(req,res)  
+userRouter.delete('/usuarios/:id', async (req, res) => {
+  return userController.deletar(req,res)  
 })

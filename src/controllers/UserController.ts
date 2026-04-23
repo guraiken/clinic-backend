@@ -1,8 +1,8 @@
 import type { Request, Response } from "express";
-import { usuarioService, type UsuarioService } from "../services/UsuarioService";
+import { userService, type UserService } from "../services/UserService";
 
-class UsuarioController{
-    constructor(private readonly service: UsuarioService){
+class UserController{
+    constructor(private readonly service: UserService){
     }
 
     async buscarVarios( req: Request, res: Response){
@@ -62,4 +62,4 @@ class UsuarioController{
     }
 }
 
-export const usuarioController = new UsuarioController(usuarioService)
+export const userController = new UserController(userService)

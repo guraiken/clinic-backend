@@ -1,7 +1,7 @@
 import { prisma } from "../prisma/prisma";
 import type { PrismaClient, Usuario } from "../prisma/generated/prisma/client";
 
-export class UsuarioRepository {
+export class UserRepository {
     constructor(private readonly prisma: PrismaClient) {
         this.prisma = prisma
     }
@@ -37,4 +37,4 @@ export class UsuarioRepository {
     }
 }
 
-export const usuarioRepository = new UsuarioRepository(prisma)
+export const userRepository = new UserRepository(prisma)

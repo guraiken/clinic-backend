@@ -1,67 +1,27 @@
 import { Router } from "express";
 import { prisma } from "../prisma/prisma";
 import type { Exame } from "../prisma/generated/prisma/client";
+import { examController } from "../controllers/ExamController";
 
 export const examesRouter = Router()
 
 //Exames
 examesRouter.get('/exames', async (_, res) => {
-  const exames = await prisma.exame.findMany();
-  return res.json(exames);
+  return examController.buscarVarios(_, res)
 })
 
 examesRouter.get('/exames/:id', async (req, res) => {
-  const idExame = Number(req.params.id)
-  const exame = await prisma.exame.findUnique({
-    where: {
-      id: idExame
-    }
-  })
-
-  return res.status(200).json(exame);
+  return examController.buscarPorId(req, res)
 })
 
 examesRouter.post("/exames", async (req, res) => {
-  const dadosExame = req.body as Exame
-  const exameCriado = await prisma.exame.create({
-    data: {
-      tipo_exame: dadosExame.tipo_exame,
-      valor: dadosExame.valor,
-      descricao: dadosExame.descricao,
-      data_exame: new Date(dadosExame.data_exame),
-      resultado: dadosExame.resultado
-    }
-  })
-  return res.status(201).json(exameCriado)
+  return examController.criar(req, res)
 })
 
 examesRouter.put("/exames/:id", async (req, res) => {
-  const idExame = Number(req.params.id)
-  const dadosParaAtualizar = req.body as Omit<Exame, 'id'>
-
-  const exameAtualizado = await prisma.exame.update({
-    data: {
-      ...dadosParaAtualizar,
-      data_exame: new Date(dadosParaAtualizar.data_exame)
-    },
-    where: {
-      id: idExame
-    }
-  })
-
-  return res.status(200).json(exameAtualizado);
+  return examController.atualizar(req, res)
 })
 
 examesRouter.delete('/exames/:id', async (req, res) => {
-  const idExame = Number(req.params.id)
-  const exameDeletado = await prisma.exame.delete({
-    where: {
-      id: idExame
-    }
-  })
-
-  return res.status(200).json({
-    mensagem: "Exame deletado com sucesso!",
-    data: exameDeletado
-  });
+  return examController.deletar(req, res)
 })
