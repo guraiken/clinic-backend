@@ -6,7 +6,10 @@ class ExamController {
 
     async buscarVarios(req: Request, res: Response) {
         try {
-            const dadosExames = await this.service.buscarVarios()
+            const pagina = req.query.pagina ? Number(req.query.pagina) : undefined
+            const limite = req.query.limite ? Number(req.query.limite) : undefined
+
+            const dadosExames = await this.service.buscarVarios(pagina, limite)
             return res.status(200).json({
                 message: "Exames encontrados com sucesso!",
                 data: dadosExames

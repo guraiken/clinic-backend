@@ -10,7 +10,8 @@ export class AuthRepository {
             data: {
                 email: dadosUsuario.email || "",
                 senha: dadosUsuario.senha || "",
-                nome: dadosUsuario.nome || ""
+                nome: dadosUsuario.nome || "",
+                role: dadosUsuario.role || "USER"
             }
         })
     }

@@ -2,6 +2,7 @@ import { verificarTokenAcesso } from "../utils/jwt";
 import type {
     Response, Request, NextFunction
 } from "express";
+
 export function auth(req: Request, res: Response, next: NextFunction) {
     const header = req.headers.authorization;
     if (!header?.startsWith("Bearer ")) {

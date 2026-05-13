@@ -6,8 +6,23 @@ export class ExamRepository{
         prisma = this.prisma
     }      
 
-    async buscarVarios(){
-        return await this.prisma.exame.findMany()
+    async buscarVarios(pagina?: number, limite?: number){
+        const existePaginacao = pagina! && limite!
+        if(!existePaginacao) return  {exames: await this.prisma.exame.findMany()}
+    
+        const exames = await prisma.exame.findMany({
+            skip: (pagina -1) * limite,
+            take: limite
+        })
+
+        const total = Math.ceil(await this.prisma.exame.count())
+        const totalPaginas = Math.ceil(total / limite)
+        return {
+            exames,
+            total,
+            totalPaginas
+        }
+
     }
 
     async buscarPorId(id: number){
@@ -23,7 +38,8 @@ export class ExamRepository{
                 descricao: dadosExame.descricao || "",
                 tipo_exame: dadosExame.tipo_exame || "",
                 valor: dadosExame.valor || 0,
-                resultado: dadosExame.resultado || ""
+                resultado: dadosExame.resultado || "",
+                pacienteId: dadosExame.pacienteId || null
             }
         })
     }

@@ -1,10 +1,12 @@
 import { Router } from "express";
 import { prisma } from "../prisma/prisma";
-import type { Exame } from "../prisma/generated/prisma/client";
+import { Role, type Exame } from "../prisma/generated/prisma/client";
 import { examController } from "../controllers/ExamController";
+import { roleMiddleware } from "../middleware/role";
 
 export const examesRouter = Router()
 
+examesRouter.use(roleMiddleware([Role.ADMIN]))
 //Exames
 examesRouter.get('/exames', async (_, res) => {
   return examController.buscarVarios(_, res)

@@ -4,8 +4,8 @@ import { examRepository, type ExamRepository } from "../repositories/ExamReposit
 export class ExamService{
     constructor(private readonly repository: ExamRepository){}
 
-    async buscarVarios(){
-        return await this.repository.buscarVarios()
+    async buscarVarios(pagina?: number, limite?: number){
+        return await this.repository.buscarVarios(pagina, limite)
     }
 
     async buscarPorId(id: number){
@@ -24,7 +24,8 @@ export class ExamService{
             resultado: exame.resultado,
             tipo_exame: exame.tipo_exame,
             valor: exame.valor,
-            id: exame.id
+            id: exame.id,
+            pacienteId: exame.pacienteId
         })
         return dadosExame
     }

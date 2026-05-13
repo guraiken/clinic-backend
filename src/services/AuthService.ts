@@ -14,7 +14,8 @@ export class AuthService {
         const usuarioCriado = await this.repository.cadastrar({
             email: dadosUsuario.email,
             nome: dadosUsuario.nome || null,
-            senha: hash
+            senha: hash,
+            role: dadosUsuario.role || null
         })
         return usuarioCriado
     }
@@ -26,11 +27,13 @@ export class AuthService {
         if (existeUsuario && credenciaisValidas) {
             const tokenAcesso = signTokenAcesso({
                 email: existeUsuario.email,
-                nome: existeUsuario.nome
+                nome: existeUsuario.nome,
+                role: existeUsuario.role
             })
             const tokenRefresh = signTokenRefresh({
                 email: existeUsuario.email,
-                nome: existeUsuario.nome
+                nome: existeUsuario.nome,
+                role: existeUsuario.role
             })
 
             const accessExpires = new Date()
