@@ -21,7 +21,7 @@ export function roleMiddleware(roles: Role[]) {
             })
             const tokenData = getToken(token)
 
-            if(tokenData?.role && !roles.includes(tokenData?.role)){
+            if(!tokenData?.role || !roles.includes(tokenData?.role || "ADMIN")){
                 return res.status(403).json({
                     message: "Acesso negado"
                 })
