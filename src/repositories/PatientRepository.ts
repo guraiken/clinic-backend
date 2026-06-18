@@ -26,7 +26,7 @@ export class PatientRepository {
     }
 
     async cadastrarPaciente(dadosPaciente: Partial<Paciente>){
-        const criarPaciente = await this.prisma.paciente.create({
+        return await this.prisma.paciente.create({
             data: {
                 nome: dadosPaciente.nome || "",
                 email: dadosPaciente.email || "",

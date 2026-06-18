@@ -18,7 +18,7 @@ export class UserRepository {
     }
 
     async atualizar(dadosUsuario: Usuario) {
-        const usuarioAtualizado = await this.prisma.usuario.update({
+        return await this.prisma.usuario.update({
             data: {
                 ...dadosUsuario
             },

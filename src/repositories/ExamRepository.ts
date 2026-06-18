@@ -39,7 +39,7 @@ export class ExamRepository{
                 tipo_exame: dadosExame.tipo_exame || "",
                 valor: dadosExame.valor || 0,
                 resultado: dadosExame.resultado || "",
-                pacienteId: dadosExame.pacienteId || null
+                pacienteId: dadosExame.pacienteId
             }
         })
     }
