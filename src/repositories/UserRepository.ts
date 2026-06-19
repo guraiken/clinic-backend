@@ -29,7 +29,7 @@ export class UserRepository {
     }
 
     async deletar(id: number) {
-        const usuarioDeletado = await this.prisma.usuario.delete({
+        return await this.prisma.usuario.delete({
             where: {
                 id: id
             }

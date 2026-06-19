@@ -1,7 +1,7 @@
 import type { PrismaClient, Prontuario } from "../prisma/generated/prisma/client"
 import { prisma } from "../prisma/prisma"
 
-class ProntuaryRepository {
+export class ProntuaryRepository {
     constructor(private readonly prisma: PrismaClient){
         this.prisma = prisma
     }
@@ -26,6 +26,24 @@ class ProntuaryRepository {
             }
         })
     }
+
+    async editarProntuario(dadosNovos: Partial<Prontuario>, id: number) {
+        return await this.prisma.prontuario.update({
+            where: {id},
+            data: {
+                paciente_id: dadosNovos.paciente_id || 0,
+                medico_responsavel_id: dadosNovos.medico_responsavel_id || 0,
+                descricao: dadosNovos.descricao || "",
+                data: dadosNovos.data || "" 
+            }
+        })
+    }
+
+    async deletarProntuario(id:number) {
+        return await this.prisma.prontuario.delete({
+            where: {id}
+        })
+    }
 }
 
-export const prontuaryRepository = prisma
+export const prontuaryRepository = new ProntuaryRepository(prisma)
