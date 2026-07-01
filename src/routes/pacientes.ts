@@ -12,6 +12,10 @@ patientRouter.get('/pacientes/:id', async (req, res) => {
   return patientController.buscarPorId(req, res)
 })
 
+patientRouter.post('/pacientes', async (req, res) => {
+  return patientController.cadastrarPaciente(req, res)
+})
+
 patientRouter.put("/pacientes/:id", async (req, res) => {
   return patientController.editarPaciente(req, res)
 })

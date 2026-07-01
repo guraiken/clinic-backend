@@ -1,6 +1,6 @@
 const saltRound = 10;
-import bcrypt from "bcrypt"
+import { hash } from "bcrypt"
 
 export async function createHash(senha: string) {
-    return await bcrypt.hash(senha, saltRound)
+    return await hash(senha, saltRound)
 }
