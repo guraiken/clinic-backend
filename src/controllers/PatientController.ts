@@ -11,11 +11,19 @@ class PatientController {
             const pagina = req.query.pagina ? Number(req.query.pagina) : undefined
             const limite = req.query.limite ? Number(req.query.limite) : undefined
 
-            const dadosPacientes = await this.service.listarPacientes(pagina, limite)
-            return res.status(200).json({
-                message: "Pacientes encontrados com sucesso!",
-                data: dadosPacientes
-            })
+            if(pagina === undefined || limite === undefined) {
+                const dadosPacientes = await this.service.listarPacientes()
+                return res.status(200).json({
+                    message: "Pacientes encontrados com sucesso!",
+                    data: dadosPacientes
+                })
+            }else {   
+                const dadosPacientes = await this.service.listarPacientes(pagina, limite)
+                return res.status(200).json({
+                    message: "Pacientes encontrados com sucesso!",
+                    data: dadosPacientes
+                })
+            }
         } catch (error) {
             console.log(error)
             if (error instanceof Error) {

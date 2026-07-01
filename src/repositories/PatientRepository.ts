@@ -16,7 +16,7 @@ export class PatientRepository {
             take: limite
         })
 
-        const total = Math.ceil(await prisma.paciente.count())
+        const total = Math.ceil(await this.prisma.paciente.count())
         const totalPaginas = Math.ceil(total / limite)
         return {
             pacientes,

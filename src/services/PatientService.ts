@@ -6,7 +6,7 @@ export class PatientService{
 
     async listarPacientes(pagina?: number, limite?: number){
 
-        if(!pagina || !limite) return await this.repository.listarPacientes()
+        if(pagina === undefined || limite === undefined) return await this.repository.listarPacientes()
 
         return await this.repository.listarPacientes(pagina, limite)
     }
