@@ -2,6 +2,7 @@
 // npm install --save-dev prisma dotenv
 import "dotenv/config";
 import { defineConfig } from "prisma/config";
+import { env } from "./src/env";
 
 export default defineConfig({
   schema: "src/prisma/schema.prisma",
@@ -9,6 +10,6 @@ export default defineConfig({
     path: "src/prisma/migrations",
   },
   datasource: {
-    url: 'postgresql://postgres:senai@localhost:5432/clinic?schema=public',
+    url: process.env.DATABASE_URL || `postgresql://${env.usuarioDB}:${env.senhaDB}@localhost:5432/${env.nomeBanco}?schema=public`,
   },
 });

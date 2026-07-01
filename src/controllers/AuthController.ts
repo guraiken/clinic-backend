@@ -14,10 +14,10 @@ class AuthController {
                 message: "Usuário criado com sucesso!",
                 data: usuarioCriado
             })
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
-            return res.status(404).json({
-                error
+            return res.status(400).json({
+                error: error.message || "Erro interno ao cadastrar"
             })
         }
     }
@@ -31,10 +31,10 @@ class AuthController {
                 accessToken: dadosLogin.tokenAcesso,
                 refreshToken: dadosLogin.tokenRefresh,
             })
-        } catch (error) {
+        } catch (error: any) {
             console.log(error)
-            return res.status(404).json({
-                error
+            return res.status(400).json({
+                error: error.message || "Erro interno ao logar"
             })
         }
     }

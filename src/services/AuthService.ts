@@ -23,6 +23,7 @@ export class AuthService {
     async logar(dadosUsuario: Partial<Usuario>) {
         const existeUsuario = await this.repository.existeUsuario(dadosUsuario.email || '')
         const credenciaisValidas = await bcrypt.compare(dadosUsuario.senha || "", existeUsuario?.senha || "")
+        if (!credenciaisValidas || !existeUsuario) throw new Error("Credenciais inválidas")
         console.log(existeUsuario, credenciaisValidas, dadosUsuario)
         if (existeUsuario && credenciaisValidas) {
             const tokenAcesso = signTokenAcesso({
@@ -62,9 +63,6 @@ export class AuthService {
                 tokenRefresh
             }
         }
-
-        throw new Error("Credenciais inválidas")
-
     }
 }
 

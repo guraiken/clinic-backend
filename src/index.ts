@@ -10,8 +10,16 @@ import { consultRoute } from './routes/consultas';
 
 const app = express();
 app.use(express.json())
-app.use(cors())
-const port = 3000;
+
+// CORS explícito para evitar falhas de preflight (especialmente entre http://localhost:517x e :5000)
+app.use(
+  cors({
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Accept"]})
+)
+
+// Garante resposta correta a requests OPTIONS (preflight)
+const port = process.env.PORT || 5000;
 
 
 app.use(authRouter)
