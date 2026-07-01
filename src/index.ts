@@ -7,20 +7,14 @@ import { examesRouter } from './routes/exames';
 import { patientRouter } from './routes/pacientes';
 import { prontuaryRouter } from './routes/prontuarios';
 import { consultRoute } from './routes/consultas';
+import { env } from './env';
 
 const app = express();
 app.use(express.json())
 
-// CORS explícito para evitar falhas de preflight (especialmente entre http://localhost:517x e :5000)
-app.use(
-  cors({
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization", "Accept"]})
-)
+app.use(cors())
 
 // Garante resposta correta a requests OPTIONS (preflight)
-const port = process.env.PORT || 5000;
-
 
 app.use(authRouter)
 app.use(auth)
@@ -31,8 +25,8 @@ app.use(patientRouter)
 app.use(prontuaryRouter)
 app.use(consultRoute)
 
-app.listen(port, () => {
-  console.log("Servidor ta de pé :p " + port)
+app.listen(env.port, () => {
+  console.log("Servidor ta de pé :p " + env.port)
 })
 
 // Anotação Controller controla tudo que tem a ver com req e res
