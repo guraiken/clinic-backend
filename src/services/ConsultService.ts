@@ -23,8 +23,8 @@ export class ConsultService{
     }
 
     async criarConsulta(dadosConsulta: Consulta) {
-        if(!dadosConsulta.data_consulta || !dadosConsulta.motivo || !dadosConsulta.medico_responsavel_id || !dadosConsulta.paciente_id || dadosConsulta.observacoes){
-            throw new Error("Por favor, preencha todos os campos obrigatórios: (data, descrição, médico res, paciente")
+        if(!dadosConsulta.data_consulta || !dadosConsulta.motivo || !dadosConsulta.medico_responsavel_id || !dadosConsulta.paciente_id || !dadosConsulta.observacoes){
+            throw new Error("Por favor, preencha todos os campos obrigatórios: (data, observações, motivo, médico res, paciente)")
         }
 
         const novaConsulta = await this.repository.criarConsulta(dadosConsulta)
@@ -32,12 +32,12 @@ export class ConsultService{
     }
 
     async editarConsulta(dadosConsulta: Consulta, id: number){
-        if(!dadosConsulta || id) throw new Error("Por favor, preencha todos os campos")
+        if(!dadosConsulta || !id) throw new Error("Por favor, preencha todos os campos")
 
         const consultaExiste = await this.repository.listarPorId(id)
-        if(!consultaExiste) throw new Error("Não foi encontrado nenhum prontuário com este id")
-        if(!dadosConsulta.data_consulta || !dadosConsulta.motivo || !dadosConsulta.medico_responsavel_id || !dadosConsulta.paciente_id || dadosConsulta.observacoes){
-            throw new Error("Por favor, preencha todos os campos obrigatórios: (data, descrição, médico res, paciente")
+        if(!consultaExiste) throw new Error("Não foi encontrado nenhuma consulta com este id")
+        if(!dadosConsulta.data_consulta || !dadosConsulta.motivo || !dadosConsulta.medico_responsavel_id || !dadosConsulta.paciente_id || !dadosConsulta.observacoes){
+            throw new Error("Por favor, preencha todos os campos obrigatórios: (data, observações, motivo, médico res, paciente)")
         }
 
         const consultaEditada = await this.repository.editarConsulta(dadosConsulta, id)

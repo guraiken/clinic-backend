@@ -6,7 +6,7 @@ import { userRouter } from './routes/usuarios';
 import { examesRouter } from './routes/exames';
 import { patientRouter } from './routes/pacientes';
 import { prontuaryRouter } from './routes/prontuarios';
-import { consultRoute } from './routes/consultas';
+import { consultRouter } from './routes/consultas';
 import { env } from './env';
 
 const app = express();
@@ -23,7 +23,7 @@ app.use(userRouter)
 app.use(examesRouter)
 app.use(patientRouter)
 app.use(prontuaryRouter)
-app.use(consultRoute)
+app.use(consultRouter)
 
 app.listen(env.port, () => {
   console.log("Servidor ta de pé :p " + env.port)

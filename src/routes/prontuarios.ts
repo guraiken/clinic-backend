@@ -11,6 +11,10 @@ prontuaryRouter.get('/prontuarios/:id', async (req, res) => {
   return prontuaryController.listarPorId(req, res)
 })
 
+prontuaryRouter.post('/prontuarios', async (req, res) => {
+  return prontuaryController.criarProntuario(req, res)
+})
+
 prontuaryRouter.put("/prontuarios/:id", async (req, res) => {
   return prontuaryController.editarProntuario(req, res)
 })
