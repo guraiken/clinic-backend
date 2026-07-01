@@ -21,7 +21,14 @@ export class PatientService{
         if(!dadosPaciente.nome || !dadosPaciente.email || !dadosPaciente.cpf || !dadosPaciente.data_nascimento || !dadosPaciente.sexo) {
             throw new Error("Por favor, preencha todos os campos")
         }
-        return await this.repository.cadastrarPaciente(dadosPaciente)
+        const novoPaciente = await this.repository.cadastrarPaciente({
+            data_nascimento: dadosPaciente.data_nascimento,
+            email: dadosPaciente.email,
+            nome: dadosPaciente.nome,
+            cpf: dadosPaciente.cpf,
+            sexo: dadosPaciente.sexo
+        })
+        return novoPaciente
     }
 
     async editarPaciente(dadosPaciente: Paciente){
